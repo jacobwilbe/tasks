@@ -1,5 +1,6 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -167,7 +168,12 @@ export function addNewQuestion(
     name: string,
     type: QuestionType
 ): Question[] {
-    return [];
+    const blankQuestion = makeBlankQuestion(id, name, type);
+    let newQuestions = questions.map(
+        (question: Question): Question => ({ ...question })
+    );
+    newQuestions = [...newQuestions, blankQuestion];
+    return newQuestions;
 }
 
 /***
@@ -180,7 +186,13 @@ export function renameQuestionById(
     targetId: number,
     newName: string
 ): Question[] {
-    return [];
+    const targetArr = questions.map(
+        (question: Question): Question =>
+            question.id === targetId
+                ? { ...question, name: newName }
+                : { ...question }
+    );
+    return targetArr;
 }
 
 /***
@@ -195,7 +207,20 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType
 ): Question[] {
-    return [];
+    let targ = questions.map(
+        (question: Question): Question =>
+            question.id === targetId
+                ? { ...question, type: newQuestionType }
+                : { ...question }
+    );
+    targ = targ.map(
+        (question: Question): Question =>
+            question.id === targetId &&
+            question.type !== "multiple_choice_question"
+                ? { ...question, options: [] }
+                : { ...question }
+    );
+    return targ;
 }
 
 /**
@@ -214,6 +239,15 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string
 ): Question[] {
+    if (targetOptionIndex === -1) {
+        const newQuestions = questions.map(
+            (question: Question): Question =>
+                question.id === targetId
+                    ? { ...question, options: [...question.options, newOption] }
+                    : { ...question }
+        );
+        return newQuestions;
+    }
     return [];
 }
 
