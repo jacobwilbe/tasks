@@ -68,14 +68,25 @@ export function getNames(questions: Question[]): string[] {
  * Consumes an array of questions and returns the sum total of all their points added together.
  */
 export function sumPoints(questions: Question[]): number {
-    return 0;
+    const sum = questions.reduce(
+        (total: number, questions: Question) => total + questions.points,
+        0
+    );
+    return sum;
 }
 
 /***
  * Consumes an array of questions and returns the sum total of the PUBLISHED questions.
  */
 export function sumPublishedPoints(questions: Question[]): number {
-    return 0;
+    const publish = questions.filter(
+        (question: Question): boolean => question.published === true
+    );
+    const sum = publish.reduce(
+        (total: number, publish: Question) => total + publish.points,
+        0
+    );
+    return sum;
 }
 
 /***
@@ -96,7 +107,13 @@ id,name,options,points,published
  * Check the unit tests for more examples!
  */
 export function toCSV(questions: Question[]): string {
-    return "";
+    const questionCSV = questions
+        .map(
+            (question: Question): string =>
+                `${question.id},${question.name},${question.options.length},${question.points},${question.published}`
+        )
+        .join("\n");
+    return "id,name,options,points,published" + "\n" + questionCSV;
 }
 
 /**
@@ -105,7 +122,15 @@ export function toCSV(questions: Question[]): string {
  * making the `text` an empty string, and using false for both `submitted` and `correct`.
  */
 export function makeAnswers(questions: Question[]): Answer[] {
-    return [];
+    const answers = questions.map(
+        (question: Question): Answer => ({
+            questionId: question.id,
+            text: "",
+            submitted: false,
+            correct: false
+        })
+    );
+    return answers;
 }
 
 /***
@@ -113,7 +138,10 @@ export function makeAnswers(questions: Question[]): Answer[] {
  * each question is now published, regardless of its previous published status.
  */
 export function publishAll(questions: Question[]): Question[] {
-    return [];
+    const publishing = questions.map(
+        (question: Question): Question => ({ ...question, published: true })
+    );
+    return publishing;
 }
 
 /***
@@ -121,7 +149,11 @@ export function publishAll(questions: Question[]): Question[] {
  * are the same type. They can be any type, as long as they are all the SAME type.
  */
 export function sameType(questions: Question[]): boolean {
-    return false;
+    const types = questions.filter(
+        (question: Question): boolean =>
+            question.type === "multiple_choice_question"
+    );
+    return types.length === 0 || types.length === questions.length;
 }
 
 /***
