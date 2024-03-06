@@ -1,45 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import mark from "./mark.jpg.webp";
 import "./App.css";
+import { ChangeType } from "./components/ChangeType";
+import { RevealAnswer } from "./components/RevealAnswer";
+import { StartAttempt } from "./components/StartAttempt";
+import { TwoDice } from "./components/TwoDice";
+import { CycleHoliday } from "./components/CycleHoliday";
+import { Counter } from "./components/Counter";
 import { Button } from "react-bootstrap";
-import { Container } from "react-bootstrap";
-import { Col } from "react-bootstrap";
-import { Row } from "react-bootstrap";
 
 function App(): JSX.Element {
+    const [RevealAnswer, setVisible] = useState<boolean>(false);
+    function flipVisibility(): void {
+        setVisible(!RevealAnswer);
+    }
     return (
         <div className="App">
-            <header className="App-header">
-                UD CISC275 with React Hooks and TypeScript Hello World
-            </header>
-            <p>
-                Edit <code>src/App.tsx</code> and save. This page will
-                automatically reload. Jacob Wilber
-            </p>
-            <h1>Mark Zuckerberg</h1>
-            <img src={mark} alt="picture of Mark Zuckerberg" />
-            <ul>
-                <li>CEO of Meta</li>
-                <li>Harvard Dropout</li>
-                <li>Founded Facebook at the age of 19</li>
-            </ul>
-            <Button onClick={() => console.log("Hello World!")}>
-                Log Hello World
-            </Button>
-            <div>
-                <Container>
-                    <Row>
-                        <Col>
-                            Red Box #1
-                            <div className="Red-Box"></div>
-                        </Col>
-                        <Col>
-                            Red Box #2
-                            <div className="Red-Box"></div>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+            <header className="App-header">UD CISC275 Using State</header>
+            <hr></hr>
+            <Counter></Counter>
+            <hr />
+            <Button onClick={flipVisibility}>Reveal Answer</Button>
+            {RevealAnswer && <div>42</div>}
+            <hr />
+            <StartAttempt></StartAttempt>
+            <hr />
+            <TwoDice></TwoDice>
+            <hr />
+            <ChangeType></ChangeType>
+            <hr />
+            <CycleHoliday></CycleHoliday>
         </div>
     );
 }
