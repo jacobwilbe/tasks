@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
+interface coloredBoxProps {
+    setColorIndex: (newIndex: number) => void;
+    colorIndex: number;
+}
+
 export const COLORS = ["red", "blue", "green"];
 const DEFAULT_COLOR_INDEX = 0;
 
-function ChangeColor(): JSX.Element {
-    const [colorIndex, setColorIndex] = useState<number>(DEFAULT_COLOR_INDEX);
+function ChangeColor({
+    setColorIndex,
+    colorIndex
+}: coloredBoxProps): JSX.Element {
     return (
         <Button onClick={() => setColorIndex((1 + colorIndex) % COLORS.length)}>
             Next Color
@@ -13,14 +20,17 @@ function ChangeColor(): JSX.Element {
     );
 }
 
-function ColorPreview(): JSX.Element {
+function ColorPreview({
+    setColorIndex,
+    colorIndex
+}: coloredBoxProps): JSX.Element {
     return (
         <div
             data-testid="colored-box"
             style={{
                 width: "50px",
                 height: "50px",
-                backgroundColor: COLORS[DEFAULT_COLOR_INDEX],
+                backgroundColor: COLORS[colorIndex],
                 display: "inline-block",
                 verticalAlign: "bottom",
                 marginLeft: "5px"
@@ -30,13 +40,20 @@ function ColorPreview(): JSX.Element {
 }
 
 export function ColoredBox(): JSX.Element {
+    const [colorIndex, setColorIndex] = useState<number>(DEFAULT_COLOR_INDEX);
     return (
         <div>
             <h3>Colored Box</h3>
             <span>The current color is: {COLORS[DEFAULT_COLOR_INDEX]}</span>
             <div>
-                <ChangeColor></ChangeColor>
-                <ColorPreview></ColorPreview>
+                <ChangeColor
+                    setColorIndex={setColorIndex}
+                    colorIndex={colorIndex}
+                ></ChangeColor>
+                <ColorPreview
+                    setColorIndex={setColorIndex}
+                    colorIndex={colorIndex}
+                ></ColorPreview>
             </div>
         </div>
     );
