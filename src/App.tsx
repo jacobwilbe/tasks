@@ -14,7 +14,7 @@ import { ChooseTeam } from "./bad-components/ChooseTeam";
 function App(): JSX.Element {
     return (
         <div className="App">
-            <header className="App-header">UD CISC275 Using State</header>
+            <header className="App-header"> Jacob Wilber UD CISC275</header>
             <hr></hr>
             <DoubleHalf></DoubleHalf>
             <hr></hr>
